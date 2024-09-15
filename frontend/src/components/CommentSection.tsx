@@ -65,7 +65,10 @@ export const CommentSection = ({ blogId }: { blogId: string }) => {
                 )
                 .then((response) => {
                   const newComment: Comment = response.data.comment;
-                  setComments((prevComments) => [...prevComments, newComment]);
+                  setComments((prevComments) => [
+                    ...(prevComments ?? []),
+                    newComment,
+                  ]);
                   setDescription("");
                 }),
               {

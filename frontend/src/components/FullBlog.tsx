@@ -12,6 +12,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 
   // Custom rendering for anchor (<a>) tags
   const options = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     replace: (domNode: any) => {
       if (domNode.name === "a") {
         const { attribs, children } = domNode;

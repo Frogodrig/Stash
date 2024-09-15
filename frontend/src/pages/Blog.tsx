@@ -6,7 +6,7 @@ import { Appbar } from "../components/Appbar";
 
 export const Blog = () => {
   const { id } = useParams();
-  const { loading, blog } = useBlog({ id });
+  const { loading, blog } = useBlog({ id: id ?? "" });
   const navigate = useNavigate();
 
   const { loading: profileLoading, profile } = useProfile();
@@ -26,7 +26,7 @@ export const Blog = () => {
   return (
     <div>
       <Appbar profile={profile} />
-      <FullBlog blog={blog} />
+      {blog && <FullBlog blog={blog} />}
     </div>
   );
 };
