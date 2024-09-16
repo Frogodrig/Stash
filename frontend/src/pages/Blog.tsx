@@ -12,7 +12,7 @@ export const Blog = () => {
   const { loading: profileLoading, profile } = useProfile();
 
   if (!localStorage.getItem("token")) {
-    navigate("/signin");
+    navigate("/signup");
   }
 
   if (loading || profileLoading) {

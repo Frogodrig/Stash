@@ -10,7 +10,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
   const { loading, profile: user } = useProfile();
   const navigate = useNavigate();
 
-  // Custom rendering for anchor (<a>) tags
+  // Custom rendering for anchor tags
   const options = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     replace: (domNode: any) => {

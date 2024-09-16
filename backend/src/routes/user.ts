@@ -199,84 +199,6 @@ userRouter.put("/profile/view", async (c) => {
       });
     }
   }
-
-  // try {
-  //   const user = await prisma.user.findFirst({
-  //     where: {
-  //       id: userId,
-  //     },
-  //     select: {
-  //       password: true,
-  //     },
-  //   });
-  //   console.log(user?.password);
-  //   if (!user) {
-  //     c.status(403);
-  //     return c.json({
-  //       message: "Unauthorized",
-  //     });
-  //   }
-
-  //   const passwordsMatch = await passwordChecker(
-  //     body.currentPassword,
-  //     user.password
-  //   );
-  //   console.log(passwordsMatch);
-
-  //   if (passwordsMatch === false) {
-  //     c.status(403);
-  //     return c.json({
-  //       message: "Current password is incorrect",
-  //     });
-  //   }
-
-  //   // Check if we need to update the password
-  //   if (body.newPassword && !body.bio) {
-  //     const { saltHex: newSaltHex, hashedPassword: newHashedPassword } =
-  //       await passwordHasher(body.newPassword);
-
-  //     await prisma.user.update({
-  //       where: {
-  //         id: userId,
-  //       },
-  //       data: {
-  //         password: `${newSaltHex}:${newHashedPassword}`,
-  //       },
-  //     });
-  //   } else if (body.bio && body.newPassword) {
-  //     // Update both bio and password
-  //     const { saltHex: newSaltHex, hashedPassword: newHashedPassword } =
-  //       await passwordHasher(body.newPassword);
-
-  //     await prisma.user.update({
-  //       where: {
-  //         id: userId,
-  //       },
-  //       data: {
-  //         password: `${newSaltHex}:${newHashedPassword}`,
-  //         bio: body.bio,
-  //       },
-  //     });
-  //   } else if (body.bio) {
-  //     // Update only bio
-  //     await prisma.user.update({
-  //       where: {
-  //         id: userId,
-  //       },
-  //       data: {
-  //         bio: body.bio,
-  //       },
-  //     });
-  //   }
-
-  //   return c.json({ message: "Profile updated" });
-  // } catch (e) {
-  //   console.log(e);
-  //   c.status(500);
-  //   return c.json({
-  //     message: "Something went wrong",
-  //   });
-  // }
 });
 
 userRouter.post("/signup", async (c) => {
@@ -293,13 +215,7 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   try {
-    let saltHex = "";
-    let hashedPassword = "";
-
-    passwordHasher(body.password).then((response) => {
-      saltHex = response.saltHex;
-      hashedPassword = response.hashedPassword;
-    });
+    const { saltHex, hashedPassword } = await passwordHasher(body.password);
 
     // Store both the salt and the hashed password in the database
     const user = await prisma.user.create({
